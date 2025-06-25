@@ -1,0 +1,10 @@
+torch
+transformers
+peft
+pytesseract
+Pillow
+pdfminer.six
+langdetect
+googletrans==4.0.0-rc1
+quart
+quart-cors

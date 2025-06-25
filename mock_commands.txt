@@ -1,0 +1,9 @@
+curl -X POST http://localhost:4706/kanzeon/summarize -H "Content-Type: application/json" -d @examples/mock_data.json
+
+curl -X POST http://localhost:4706/kanzeon/summarize -H "Content-Type: multipart/form-data" -F "file=@examples/example.pdf"
+
+curl -s -o - http://localhost:4706/kanzeon/status
+
+curl -s -o - http://localhost:4706/kanzeon/about
+
+curl -X POST http://localhost:4706/kanzeon/save_adapter -H "Content-Type: application/json" -d "{}"
