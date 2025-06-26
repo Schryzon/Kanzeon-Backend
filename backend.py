@@ -42,7 +42,7 @@ class Kanzeon(Quart):
         Initialize Kanzeon class from the inherited class.
         """
         super().__init__(import_name, **kwargs)
-        CORS(self, allow_origin="*")
+        CORS(self, allow_origin = "*")
 
         # App attributes
         self.project = "Kanzeon"
