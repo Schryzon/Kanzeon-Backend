@@ -87,10 +87,16 @@ class Kanzeon(Quart):
             )
             self.model = get_peft_model(base_model, lora_config)
 
-        self.max_input_tokens = 1024
-        self.max_output_tokens = 520
-        self.min_output_tokens = 30
-        self.stride = 200
+        # Configurations
+        self.do_sample = True
+        self.temperature = 1.1
+        self.top_k = 50
+        self.top_p = 0.9
+        self.repetition_penalty = 0.7
+        self.max_input_tokens = 1024 # Match T5-large limit
+        self.max_output_tokens = 256
+        self.min_output_tokens = 70
+        self.stride = 150
 
         # Init the summarizer
         self.summarizer = pipeline(
@@ -358,9 +364,15 @@ class Kanzeon(Quart):
                     summary = await asyncio.to_thread(
                         lambda c: self.summarizer(
                             c,
+                            max_new_tokens = self.max_output_tokens,
+                            min_new_tokens = self.min_output_tokens,
                             max_length = self.max_output_tokens,
                             min_length = self.min_output_tokens,
-                            do_sample = False
+                            do_sample = self.do_sample,
+                            temperature = self.temperature,
+                            top_k = self.top_k,
+                            top_p = self.top_p,
+                            repetition_penalty = self.repetition_penalty
                         )[0]["summary_text"], chunk
                     )
                 except torch.cuda.OutOfMemoryError:

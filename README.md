@@ -162,11 +162,11 @@ Utilizes your **GPU** if CUDA is available, and the CUDA version of **[Pytorch](
       </thead>
         <tr style='border-bottom: 1px solid #eee;'>
           <td style='padding: 8px;'><b><a href='https://github.com/Schryzon/Kanzeon-Backend/blob/master/test/check_dir.py'>check_dir.py</a></b></td>
-          <td style='padding: 8px;'>Unit test to verify that required directories and files (e.g. tmp/, kanzeon_adapter/) exist.</td>
+          <td style='padding: 8px;'>A two-line script to find the location of the installed models from HuggingFace.</td>
         </tr>
         <tr style='border-bottom: 1px solid #eee;'>
           <td style='padding: 8px;'><b><a href='https://github.com/Schryzon/Kanzeon-Backend/blob/master/test/test.py'>test.py</a></b></td>
-          <td style='padding: 8px;'>Automated tests covering core API endpoints and edge‐case handling.</td>
+          <td style='padding: 8px;'>Initial testing script for the pipeline (no routes implemented).</td>
         </tr>
       </table>
     </blockquote>
@@ -253,34 +253,54 @@ Build Kanzeon-Backend from the source and intsall dependencies:
     ❯ cd Kanzeon-Backend
     ```
 
-3. **Install the dependencies:**
+3. **(Optional) Create & activate a virtualenv** (if you plan to use pip):
 
-	**Using [docker](https://www.docker.com/):**
+    ```sh
+    ❯ python3 -m venv .venv
+    ❯ source .venv/bin/activate
+    ```
 
-	```sh
-	❯ docker build -t Schryzon/Kanzeon-Backend .
-	```
+4. **Install the dependencies:**
 
-	**Using [pip](https://pypi.org/project/pip/):**
+	 **Using [Docker](https://www.docker.com/) (Recommended):**
 
-	```sh
-	❯ pip install -r requirements.txt
-	```
+   Make sure you have Docker Engine, Docker Compose, and the NVIDIA Container Toolkit (for GPU support) installed.
+   
+   i. With GPU Support
+   ```sh
+   ❯ docker-compose up --build
+   ```
+
+   ii. Without GPU Support
+	 ```sh
+	 ❯ docker build -t Schryzon/Kanzeon-Backend .
+	 ```
+
+	 **Using [pip](https://pypi.org/project/pip/):**
+
+   i. With GPU Support
+	 ```sh
+	 ❯ pip install -r requirements-cuda.txt
+	 ```
+
+   ii. Without GPU Support
+   ```sh
+   ❯ pip install -r requirements-nocuda.txt
+	 ```
 
 ### Usage
 
 Run the project with:
 
-**Using [docker](https://www.docker.com/):**
+**Using [Docker](https://www.docker.com/):**
 ```sh
 ❯ docker run -it Schryzon/Kanzeon-Backend
 ```
 **Using [pip](https://pypi.org/project/pip/):**
 ```sh
 ❯ python backend.py
+❯ streamlit run frontend.py --server.port=8501 --server.address=0.0.0.0
 ```
-
----
 
 ---
 
@@ -337,7 +357,7 @@ Kanzeon-backend is protected under the [MIT LICENSE](https://github.com/Schryzon
 
 - Thanks to `Selia` and `Xelisa` for teaching me how to make this! ❤️
 
-<div align="right">
+<div align="center">
 
 [![][back-to-top]](#top)
 

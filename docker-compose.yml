@@ -1,0 +1,42 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.cuda
+    image: kanzeon/backend:gpu
+    container_name: kanzeon-backend
+    command: python backend.py
+    ports:
+      - "4706:4706"
+    volumes:
+      - ./:/kanzeon
+    environment:
+      - PYTHONUNBUFFERED=1
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.cuda
+    image: kanzeon/frontend:gpu
+    container_name: kanzeon-frontend
+    command: streamlit run frontend.py --server.port=8501 --server.address=0.0.0.0
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./:/kanzeon
+    environment:
+      - PYTHONUNBUFFERED=1
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]

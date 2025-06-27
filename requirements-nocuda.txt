@@ -1,0 +1,13 @@
+torch>=2.7.1
+torchaudio>=2.7.1
+torchvision>=0.22.1
+transformers
+peft
+pytesseract
+Pillow
+pdfminer.six
+langdetect
+googletrans==4.0.0-rc1
+quart
+quart-cors
+streamlit

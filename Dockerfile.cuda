@@ -1,0 +1,33 @@
+# Use NVIDIA CUDA runtime as base
+FROM nvidia/cuda:12.8.0-cudnn-runtime-ubuntu22.04
+
+# Set working directory
+WORKDIR /kanzeon
+
+# Install Python 3.11 and system deps
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends \
+    python3.11 python3.11-venv python3-pip \
+    libgl1 \
+    tesseract-ocr \
+    poppler-utils \
+ && rm -rf /var/lib/apt/lists/*
+
+# Ensure python3 points to python3.11
+RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.11 1
+
+# Copy and install Python dependencies
+COPY requirements-cuda.txt .
+RUN pip3 install --no-cache-dir -r requirements-cuda.txt
+
+# Copy the rest of your project
+COPY . .
+
+# Create tmp directory for uploads
+RUN mkdir -p ./tmp
+
+# Expose ports for API & Streamlit (if using in same image)
+EXPOSE 4706 8501
+
+# Default to backend; override in compose for frontend
+CMD ["python3", "backend.py"]
